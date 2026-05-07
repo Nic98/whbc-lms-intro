@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中部数字化教学管理系统调研计划 — 武汉英中学校</title>
+<style>
+  /* ===== CSS VARIABLES ===== */
+  :root {
+    --blue:       #1B3A6B;
+    --blue-light: #2a5298;
+    --blue-dim:   #e8edf5;
+    --wine:       #8C1F28;
+    --wine-light: #a52535;
+    --wine-dim:   #f5e8ea;
+    --bg:         #F5F3EF;
+    --card:       #FFFFFF;
+    --text:       #2C2C2C;
+    --text-muted: #6b6b6b;
+    --border:     #e0dbd4;
+    --shadow:     0 2px 12px rgba(27,58,107,0.08);
+    --shadow-md:  0 4px 24px rgba(27,58,107,0.12);
+    --radius:     8px;
+    --radius-lg:  12px;
+    --transition: 0.25s ease;
+  }
+
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  a { color: var(--blue); text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  h1, h2, h3, h4 { line-height: 1.3; }
+
+  /* ===== NAVIGATION ===== */
+  #navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--blue);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .nav-logo {
+    height: 36px;
+    width: auto;
+  }
+  .nav-logo-fallback {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2px;
+    list-style: none;
+  }
+  .nav-links li a {
+    color: rgba(255,255,255,0.82);
+    padding: 8px 13px;
+    border-radius: 5px;
+    font-size: 13.5px;
+    transition: background var(--transition), color var(--transition);
+    white-space: nowrap;
+    display: block;
+  }
+  .nav-links li a:hover,
+  .nav-links li a.active {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+  }
+  .nav-links li a.active {
+    background: var(--wine);
+    color: #fff;
+  }
+
+  /* Hamburger */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    background: transparent;
+    border: none;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform var(--transition), opacity var(--transition);
+  }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile nav drawer */
+  .nav-mobile {
+    display: none;
+    background: var(--blue);
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding: 8px 0 12px;
+  }
+  .nav-mobile.open { display: block; }
+  .nav-mobile ul { list-style: none; padding: 0 16px; }
+  .nav-mobile ul li a {
+    display: block;
+    color: rgba(255,255,255,0.85);
+    padding: 10px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background var(--transition);
+  }
+  .nav-mobile ul li a:hover,
+  .nav-mobile ul li a.active {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+  }
+  .nav-mobile ul li a.active { background: var(--wine); }
+
+  /* ===== LAYOUT ===== */
+  #main {
+    padding-top: 60px;
+    min-height: 100vh;
+  }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .section { padding: 56px 0 48px; }
+  .section-sm { padding: 32px 0 28px; }
+
+  /* ===== PAGE HERO ===== */
+  .page-hero {
+    background: linear-gradient(135deg, var(--blue) 0%, #253f7a 100%);
+    color: #fff;
+    padding: 56px 0 48px;
+  }
+  .page-hero h1 {
+    font-size: clamp(22px, 3.5vw, 34px);
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .page-hero p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.82);
+    max-width: 680px;
+    line-height: 1.65;
+  }
+  .hero-label {
+    display: inline-block;
+    background: var(--wine);
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+  }
+
+  /* ===== TYPOGRAPHY ===== */
+  .section-title {
+    font-size: clamp(20px, 2.8vw, 28px);
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .section-subtitle {
+    font-size: 15.5px;
+    color: var(--text-muted);
+    max-width: 680px;
+    line-height: 1.65;
+    margin-bottom: 32px;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: var(--text);
+    max-width: 820px;
+    line-height: 1.8;
+    margin-bottom: 36px;
+  }
+  .section-desc p + p { margin-top: 1em; }
+
+  .divider {
+    width: 40px;
+    height: 3px;
+    background: var(--wine);
+    border-radius: 2px;
+    margin: 12px 0 20px;
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    border: 1px solid var(--border);
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+  }
+  .card-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .value-card {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: box-shadow var(--transition), transform var(--transition);
+  }
+  .value-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .value-card .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--blue-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    font-size: 18px;
+  }
+  .value-card h3 {
+    font-size: 16px;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  .value-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ===== TAGS ===== */
+  .tag-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  .tag-blue { background: var(--blue-dim); color: var(--blue); }
+  .tag-wine { background: var(--wine-dim); color: var(--wine); }
+  .tag-gray { background: #f0eeea; color: var(--text-muted); }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 24px;
+    border-radius: var(--radius);
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all var(--transition);
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--blue);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--blue-light); color: #fff; }
+  .btn-wine {
+    background: var(--wine);
+    color: #fff;
+  }
+  .btn-wine:hover { background: var(--wine-light); color: #fff; }
+  .btn-outline {
+    background: transparent;
+    color: var(--blue);
+    border: 1.5px solid var(--blue);
+  }
+  .btn-outline:hover { background: var(--blue); color: #fff; }
+  .btn-lg { padding: 14px 32px; font-size: 16px; }
+
+  /* ===== HOME PAGE ===== */
+  #page-home .hero {
+    background: linear-gradient(135deg, var(--blue) 0%, #243e7c 60%, #1a3060 100%);
+    padding: 80px 0 64px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  #page-home .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+  }
+  #page-home .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-text .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 16px;
+  }
+  .hero-text h1 {
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 800;
+    margin-bottom: 20px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+  .hero-text h1 em {
+    font-style: normal;
+    color: #f0c060;
+  }
+  .hero-text .hero-body {
+    font-size: 15px;
+    color: rgba(255,255,255,0.78);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+  .hero-text .hero-body p + p { margin-top: 10px; }
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .brand-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    backdrop-filter: blur(4px);
+  }
+  .brand-card .bc-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 6px;
+  }
+  .brand-card h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .brand-card .bc-sub {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 20px;
+  }
+  .kw-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .kw-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.85);
+  }
+  .kw-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f0c060;
+    flex-shrink: 0;
+  }
+  .flow-line {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.9;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 16px;
+  }
+  .flow-line strong { color: rgba(255,255,255,0.75); font-weight: 600; }
+
+  /* ===== PAIN POINTS PAGE ===== */
+
+  .compare-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .compare-card {
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    border: 1.5px solid;
+  }
+  .compare-card.qq {
+    background: #fafaf8;
+    border-color: var(--border);
+  }
+  .compare-card.sys {
+    background: var(--blue-dim);
+    border-color: #c5d0e6;
+  }
+  .compare-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .compare-card.qq h3 { color: var(--text-muted); }
+  .compare-card.sys h3 { color: var(--blue); }
+  .compare-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+  /* Pain point accordion */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+    align-items: start;
+  }
+  .pain-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: box-shadow var(--transition);
+  }
+  .pain-card:hover { box-shadow: var(--shadow-md); }
+  .pain-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    user-select: none;
+  }
+  .pain-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .pain-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--wine-dim);
+    color: var(--wine);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .pain-card-header h3 {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .pain-arrow {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: transform var(--transition);
+    flex-shrink: 0;
+  }
+  .pain-card.open .pain-arrow { transform: rotate(180deg); }
+  .pain-card-body {
+    display: none;
+    padding: 0 20px 20px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    border-top: 1px solid var(--border);
+  }
+  .pain-card.open .pain-card-body { display: block; }
+  .pain-card-body p + p { margin-top: 10px; }
+  .pain-card-body p:first-child { padding-top: 16px; }
+
+  .pain-summary {
+    background: var(--blue-dim);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    margin-top: 36px;
+    border-left: 4px solid var(--blue);
+  }
+  .pain-summary p {
+    font-size: 14.5px;
+    color: var(--blue);
+    line-height: 1.75;
+  }
+
+  /* ===== SYSTEM VALUE PAGE ===== */
+  .role-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .role-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    color: var(--text-muted);
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .role-btn:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  .role-btn.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+  .role-content {
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+  .role-content.active { display: block; }
+  .role-panel {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .role-panel h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+  .role-panel p { font-size: 15px; color: var(--text-muted); line-height: 1.8; }
+
+  .principal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+  }
+  .principal-card {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .principal-card .q-mark {
+    font-size: 28px;
+    color: var(--blue-dim);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .principal-card h4 {
+    font-size: 14.5px;
+    color: var(--wine);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .principal-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
+
+  /* ===== PLATFORM COMPARE PAGE ===== */
+  .platform-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--border);
+  }
+  .platform-tab {
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all var(--transition);
+  }
+  .platform-tab:hover { color: var(--blue); }
+  .platform-tab.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+  }
+  .platform-panel { display: none; animation: fadeIn 0.25s ease; }
+  .platform-panel.active { display: block; }
+
+  .platform-intro {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+  }
+  .platform-intro .pi-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .platform-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .badge-mb { background: var(--blue); color: #fff; }
+  .badge-yg { background: var(--wine); color: #fff; }
+  .platform-intro h2 { font-size: 20px; color: var(--text); }
+  .platform-intro p { font-size: 14.5px; color: var(--text-muted); line-height: 1.8; }
+
+  /* Comparison table */
+  .compare-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    font-size: 14px;
+  }
+  .compare-table th {
+    background: var(--blue);
+    color: #fff;
+    padding: 14px 18px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13.5px;
+    white-space: nowrap;
+  }
+  .compare-table th:first-child { border-radius: var(--radius-lg) 0 0 0; }
+  .compare-table th:last-child { border-radius: 0 var(--radius-lg) 0 0; }
+  .compare-table td {
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.65;
+    color: var(--text);
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: #fafaf8; }
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: var(--blue);
+    white-space: nowrap;
+    width: 130px;
+  }
+
+  .questions-box {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    margin-top: 32px;
+  }
+  .questions-box h3 {
+    font-size: 17px;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .questions-box .q-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+  .q-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .q-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .q-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .q-item p { font-size: 14px; color: var(--text); line-height: 1.65; }
+  .q-note {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 12px 16px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--border);
+  }
+
+  /* ===== ACCORDION (questions-box) ===== */
+  .questions-accordion {
+    cursor: default;
+  }
+  .questions-accordion[open] > .questions-summary .accordion-arrow,
+  .questions-accordion[open] > .questions-summary .tl-arrow {
+    transform: rotate(180deg);
+  }
+  .questions-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    margin-bottom: 0;
+  }
+  .questions-summary::-webkit-details-marker { display: none; }
+  .questions-summary h3 {
+    margin-bottom: 0;
+    color: var(--blue);
+  }
+  .questions-summary-yg h3 {
+    color: var(--wine);
+  }
+  .accordion-arrow {
+    font-size: 16px;
+    color: var(--blue);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+  .questions-summary-yg .accordion-arrow {
+    color: var(--wine);
+  }
+  .questions-accordion > .q-desc,
+  .questions-accordion > .q-list,
+  .questions-accordion > .q-note {
+    margin-top: 0;
+  }
+  .questions-accordion[open] > .questions-summary {
+    margin-bottom: 6px;
+  }
+
+  /* ===== RESEARCH PLAN PAGE ===== */
+  .timeline {
+    position: relative;
+    padding-left: 48px;
+    margin-top: 8px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .timeline-dot {
+    position: absolute;
+    left: -40px;
+    top: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--bg);
+    z-index: 1;
+    transition: background var(--transition);
+  }
+  .timeline-item.open .timeline-dot { background: var(--wine); }
+  .timeline-header {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+    transition: box-shadow var(--transition);
+    user-select: none;
+  }
+  .timeline-header:hover { box-shadow: var(--shadow-md); }
+  .timeline-header h3 {
+    font-size: 15.5px;
+    color: var(--blue);
+    font-weight: 700;
+  }
+  .tl-arrow {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: transform var(--transition);
+    flex-shrink: 0;
+  }
+  .timeline-item.open .tl-arrow { transform: rotate(180deg); }
+  .timeline-body {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: 20px 22px 22px;
+  }
+  .timeline-item.open .timeline-body { display: block; }
+  .tl-field { margin-bottom: 12px; }
+  .tl-field label {
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .tl-field p { font-size: 14px; color: var(--text); line-height: 1.65; }
+  .tl-output {
+    display: inline-block;
+    background: var(--wine-dim);
+    color: var(--wine);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-top: 4px;
+  }
+
+  .risk-box {
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+    padding: 26px 30px;
+    border: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  .risk-box h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .risk-box ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .risk-box li {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+  .risk-box li::before {
+    content: '—';
+    color: var(--wine);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ===== SURVEY PAGE ===== */
+  .survey-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 48px;
+  }
+  .survey-card {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 22px 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .survey-card .sc-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .survey-card h4 {
+    font-size: 14px;
+    color: var(--blue);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .survey-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; }
+
+  .survey-cta {
+    background: linear-gradient(135deg, var(--blue) 0%, #253f7a 100%);
+    border-radius: var(--radius-lg);
+    padding: 48px 40px;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 36px;
+  }
+  .survey-cta p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    max-width: 600px;
+    margin: 0 auto 28px;
+    line-height: 1.75;
+  }
+  .survey-cta .btn-survey {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    color: var(--blue);
+    padding: 14px 32px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 700;
+    transition: all var(--transition);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .survey-cta .btn-survey:hover {
+    background: #f0c060;
+    color: var(--blue);
+    transform: translateY(-1px);
+  }
+  .survey-hint {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 14px;
+  }
+  .survey-replace {
+    font-size: 13px;
+    color: var(--text-muted);
+    background: #fafaf8;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    margin-top: 12px;
+    display: inline-block;
+  }
+
+  .survey-outcomes {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .survey-outcomes h3 {
+    font-size: 16px;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .survey-outcomes .so-note {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+  .outcome-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .outcome-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .outcome-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .outcome-item p { font-size: 13.5px; color: var(--text); line-height: 1.6; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--blue);
+    color: rgba(255,255,255,0.65);
+    padding: 28px 0;
+    font-size: 13px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-inner span { color: rgba(255,255,255,0.45); }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .page.active { animation: fadeIn 0.3s ease; }
+
+  /* ===== BG SECTION ALTERNATION ===== */
+  .section-alt { background: #fff; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .brand-card { display: none; }
+    .compare-cards { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    .section { padding: 40px 0 36px; }
+    .container { padding: 0 16px; }
+    .page-hero { padding: 40px 0 36px; }
+    .page-hero h1 { font-size: 22px; }
+    .hero-text h1 { font-size: 26px; }
+    #page-home .hero { padding: 52px 0 44px; }
+    .card-grid, .card-grid-2 { grid-template-columns: 1fr; }
+    .compare-table th, .compare-table td { padding: 10px 12px; font-size: 13px; }
+    .platform-tabs { overflow-x: auto; }
+    .timeline { padding-left: 40px; }
+    .timeline-dot { left: -34px; }
+    .survey-cta { padding: 36px 20px; }
+    .risk-box { padding: 20px; }
+    .questions-box { padding: 22px 18px; }
+    .role-panel { padding: 22px; }
+    .pain-summary { padding: 18px 20px; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .hero-btns { flex-direction: column; }
+    .hero-btns .btn { justify-content: center; }
+    .platform-tab { padding: 9px 14px; font-size: 13px; }
+.role-filter { gap: 6px; }
+    .role-btn { padding: 7px 13px; font-size: 13px; }
+    .outcome-grid { grid-template-columns: 1fr; }
+    .principal-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 360px) {
+    .principal-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <img
+        src="whbc-logo.png"
+        alt="武汉英中高级中学"
+        class="nav-logo"
+        id="navLogo"
+        onerror="this.style.display='none';document.getElementById('navLogoFallback').style.display='block';"
+      >
+      <span class="nav-logo-fallback" id="navLogoFallback" style="display:none;">武汉英中高级中学</span>
+    </div>
+
+    <ul class="nav-links" id="desktopNav">
+      <li><a href="#" class="nav-link active" data-page="home">首页</a></li>
+      <li><a href="#" class="nav-link" data-page="pain">系统痛点</a></li>
+      <li><a href="#" class="nav-link" data-page="value">系统价值</a></li>
+      <li><a href="#" class="nav-link" data-page="compare">系统对比</a></li>
+      <li><a href="#" class="nav-link" data-page="plan">系统调研计划</a></li>
+      <li><a href="#" class="nav-link" data-page="survey">系统调研问卷</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="navToggle" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="nav-mobile" id="mobileNav">
+    <ul>
+      <li><a href="#" class="nav-link active" data-page="home">首页</a></li>
+      <li><a href="#" class="nav-link" data-page="pain"系统痛点</a></li>
+      <li><a href="#" class="nav-link" data-page="value">系统价值</a></li>
+      <li><a href="#" class="nav-link" data-page="compare">系统对比</a></li>
+      <li><a href="#" class="nav-link" data-page="plan">系统调研计划</a></li>
+      <li><a href="#" class="nav-link" data-page="survey">系统调研问卷</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+  <!-- ============================================================ -->
+  <!-- PAGE: HOME                                                    -->
+  <!-- ============================================================ -->
+  <div class="page active" id="page-home">
+
+    <!-- Hero -->
+    <section id="page-home" class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-text">
+            <p class="eyebrow">武汉英中高级中学 · 高中部数字化管理调研</p>
+            <h1>让高中部管理<br>从<em>「消息流」</em>走向<em>「数据流」</em></h1>
+            <div class="hero-body">
+              <p>以武汉英中高级中学真实痛点为起点，调研 ManageBac+ 与云谷教育系统，寻找更适合高中部的数字化管理方案。</p>
+            </div>
+            <div class="hero-btns">
+              <button class="btn btn-wine btn-lg" onclick="navigate('pain')">查看当前系统痛点</button>
+              <button class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.45);color:#fff;" onclick="navigate('plan')">查看调研计划</button>
+            </div>
+          </div>
+
+          <!-- <div class="brand-card">
+            <p class="bc-label">Digital Management Exploration</p>
+            <h2>从 QQ 消息流<br>到学校数据流</h2>
+            <p class="bc-sub">高中部数字化管理调研</p>
+            <div class="kw-list">
+              <div class="kw-item"><span class="kw-dot"></span>课程可追踪</div>
+              <div class="kw-item"><span class="kw-dot"></span>学生有画像</div>
+              <div class="kw-item"><span class="kw-dot"></span>数据更安全</div>
+            </div>
+            <div class="flow-line">
+              <strong>需求收集</strong> → <strong>平台沟通</strong><br>
+              → <strong>定向演示</strong> → <strong>对比评估</strong><br>
+              → <strong>决策建议</strong>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Body text -->
+    <section class="section">
+      <div class="container">
+        <div class="section-desc">
+          <p>高中部每天产生大量信息：课程安排、作业反馈、学生表现、家校沟通、宿舍情况、升学材料、行政通知。这些信息现在大多流动在 QQ 群、私聊、表格和文件中。</p>
+          <p>QQ 让沟通变快，也让信息变得更分散。对于一个多课程体系并行的高中部来说，信息一旦无法沉淀，管理就会越来越依赖人工提醒、人工统计和个人经验。</p>
+          <p>这次调研的目标很明确：先梳理武汉英中高中部的真实痛点，再邀请 ManageBac+ 和云谷教育系统围绕这些痛点进行定向介绍，后续通过收集分析真实对比匹配数据进而做出决策。</p>
+        </div>
+
+        <!-- Quote -->
+        <div style="border-left:4px solid var(--wine);padding:14px 22px;background:#fff;border-radius:0 var(--radius) var(--radius) 0;max-width:680px;margin-bottom:48px;">
+          <p style="font-size:15.5px;color:var(--blue);font-style:italic;line-height:1.7;">管理系统解决的是“可追踪、可归档、可分析”。</p>
+        </div>
+
+      </div>
+    </section>
+  </div><!-- /page-home -->
+
+
+  <!-- ============================================================ -->
+  <!-- PAGE: PAIN POINTS                                            -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-pain">
+    <div class="page-hero">
+      <div class="container">
+        <span class="hero-label">系统痛点</span>
+        <h1>信息在流动，管理却难以沉淀</h1>
+        <p>对高中部来说，真正的压力不只是"消息太多"，是消息背后的任务、课程、学生和责任关系没有被系统化记录。信息一旦分散，后续就需要靠人工回忆、人工催促、人工统计来补救。</p>
+
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+
+        <!-- Compare cards -->
+        <h2 class="section-title">QQ 模式 vs 系统化管理</h2>
+        <div class="divider"></div>
+
+        <div class="compare-cards" style="margin-top:20px;">
+          <div class="compare-card qq">
+            <h3>当前以 QQ 为主的模式</h3>
+            <p>通知、文件、作业、反馈、临时安排混在多个群聊和私聊中，信息查找和确认依赖个人经验。</p>
+            <div class="tag-group" style="margin-top:14px;">
+              <span class="tag tag-gray">群聊</span>
+              <span class="tag tag-gray">私聊</span>
+              <span class="tag tag-gray">截图</span>
+              <span class="tag tag-gray">手工统计</span>
+              <span class="tag tag-gray">文件分散</span>
+              <span class="tag tag-gray">难以追踪</span>
+            </div>
+          </div>
+          <div class="compare-card sys">
+            <h3>系统化管理后的模式</h3>
+            <p>课程、作业、评估、反馈、通知和学生记录在统一平台中形成结构化数据，方便追踪、归档和分析。</p>
+            <div class="tag-group" style="margin-top:14px;">
+              <span class="tag tag-blue">统一平台</span>
+              <span class="tag tag-blue">状态追踪</span>
+              <span class="tag tag-blue">学生档案</span>
+              <span class="tag tag-blue">权限管理</span>
+              <span class="tag tag-blue">数据沉淀</span>
+              <span class="tag tag-blue">可视化反馈</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pain cards -->
+    <section class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">六大核心痛点</h2>
+        <div class="divider"></div>
+        <div class="pain-grid" id="painGrid">
+
+          <!-- 1 -->
+          <div class="pain-card" onclick="togglePain(this)">
+            <div class="pain-card-header">
+              <div class="pain-header-left">
+                <span class="pain-num">1</span>
+                <h3>沟通信息分散</h3>
+              </div>
+              <span class="pain-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="pain-card-body">
+              <p>通知、文件、任务和反馈分散在 QQ 群、私聊、群文件和本地表格中。短期看很方便，时间一长，最新版本在哪里、谁已经看过、谁还没有处理，就会变得不清楚。</p>
+              <p>专业系统可以按照课程、班级、学生和角色整理信息，让重要内容不只"发出去"，还能被找到、被追踪、被归档。</p>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="pain-card" onclick="togglePain(this)">
+            <div class="pain-card-header">
+              <div class="pain-header-left">
+                <span class="pain-num">2</span>
+                <h3>执行结果难追踪</h3>
+              </div>
+              <span class="pain-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="pain-card-body">
+              <p>现在很多工作需要靠接龙、截图、私信、人工统计来确认。通知已经发出，不代表任务已经完成。对于教师和行政来说，真正消耗时间的往往不是通知本身，是后续反复确认。</p>
+              <p>专业系统可以记录阅读、提交、反馈和完成状态，让执行过程更清楚。</p>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div class="pain-card" onclick="togglePain(this)">
+            <div class="pain-card-header">
+              <div class="pain-header-left">
+                <span class="pain-num">3</span>
+                <h3>信息不互通</h3>
+              </div>
+              <span class="pain-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="pain-card-body">
+              <p>班主任知道学生日常状态，任课教师知道课堂表现，宿舍老师知道生活表现，升学指导知道申请规划。问题在于，这些信息往往分散在不同地方。</p>
+              <p>系统化学生记录可以让相关岗位在权限范围内看到必要信息，帮助学校更完整地支持学生。</p>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="pain-card" onclick="togglePain(this)">
+            <div class="pain-card-header">
+              <div class="pain-header-left">
+                <span class="pain-num">4</span>
+                <h3>多课程体系管理复杂</h3>
+              </div>
+              <span class="pain-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="pain-card-body">
+              <p>A-Level、IGCSE、IBDP、OSSD、IFY、AP 并行，课程标准、评估方式、作业节奏和成绩报告都不完全相同。缺少统一平台时，课程负责人和管理层很难快速了解不同项目的运行状态。</p>
+              <p>专业系统可以帮助整理课程计划、评估安排、作业记录和成绩反馈，让多课程体系管理更加清晰。</p>
+            </div>
+          </div>
+
+          <!-- 5 -->
+          <div class="pain-card" onclick="togglePain(this)">
+            <div class="pain-card-header">
+              <div class="pain-header-left">
+                <span class="pain-num">5</span>
+                <h3>重复性工作较多</h3>
+              </div>
+              <span class="pain-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="pain-card-body">
+              <p>教师和行政人员经常需要反复通知、催交、截图、统计和整理表格。许多工作本身并不复杂，反复出现后会消耗大量时间。</p>
+              <p>系统可以把部分重复流程标准化，让老师和行政从低价值重复工作中释放出来。</p>
+            </div>
+          </div>
+
+          <!-- 6 -->
+          <div class="pain-card" onclick="togglePain(this)">
+            <div class="pain-card-header">
+              <div class="pain-header-left">
+                <span class="pain-num">6</span>
+                <h3>数据安全和权限边界不足</h3>
+              </div>
+              <span class="pain-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="pain-card-body">
+              <p>学生成绩、家校沟通、行为记录等重要信息分散在个人账号、群文件或本地表格中。教育数据涉及学生隐私和学校管理责任，需要更清晰的权限和记录机制。</p>
+              <p>正式系统可以通过账号权限、数据备份、操作记录和导出机制，提升数据管理规范性。</p>
+            </div>
+          </div>
+
+        </div><!-- /pain-grid -->
+      </div>
+    </section>
+  </div><!-- /page-pain -->
+
+
+  <!-- ============================================================ -->
+  <!-- PAGE: SYSTEM VALUE                                           -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-value">
+    <div class="page-hero">
+      <div class="container">
+        <span class="hero-label">系统价值</span>
+        <h1>把原本分散的工作，变成清晰的流程</h1>
+        <p>好的系统不应该增加教师负担。它应该减少重复沟通，让关键数据自然沉淀。</p>
+      </div>
+    </div>
+
+    <!-- Four values -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">四大核心价值</h2>
+        <div class="divider"></div>
+        <div class="card-grid" style="margin-top:24px;">
+          <div class="value-card">
+            <div class="icon" style="background:var(--blue-dim);">📈</div>
+            <h3>管理效率</h3>
+            <p>管理层可以更快看到高中部运行状态，不再只依赖临时汇报和人工汇总。课程进度、任务执行、学生支持和沟通状态可以逐步形成清晰视图。</p>
+          </div>
+          <div class="value-card">
+            <div class="icon" style="background:#fef3e2;">✏️</div>
+            <h3>教师减负</h3>
+            <p>教师最宝贵的时间应该用于教学、反馈和学生支持。系统可以减少重复通知、催交、截图、统计和文件查找，让低价值事务逐步被流程化处理。</p>
+          </div>
+          <div class="value-card">
+            <div class="icon" style="background:var(--wine-dim);">🏆</div>
+            <h3>学校品牌</h3>
+            <p>家长感受到的学校专业度，不只来自课程介绍和升学结果，也来自日常反馈是否清晰、沟通是否稳定、管理是否透明。系统化管理可以成为学校品牌的一部分。</p>
+          </div>
+          <div class="value-card">
+            <div class="icon" style="background:#e8f5e9;">🔐</div>
+            <h3>数据安全</h3>
+            <p>学生信息、成绩记录、家校沟通和行为反馈都属于重要教育数据。统一权限、统一归档、统一记录，可以让数据管理更规范。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Principal concerns -->
+    <section class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">主要关心点</h2>
+        <div class="divider"></div>
+        <div class="principal-grid" style="margin-top:24px;">
+          <div class="principal-card">
+            <div class="q-mark">Q</div>
+            <h4>成本是否可控？</h4>
+            <p>本阶段重点是需求收集和平台了解，不直接进入大规模投入。通过先调研、再比较、后决策，可以避免盲目采购。</p>
+          </div>
+          <div class="principal-card">
+            <div class="q-mark">Q</div>
+            <h4>是否提升学校品牌？</h4>
+            <p>统一的教育管理系统能够体现学校在课程管理、家校服务、数据安全和国际化治理方面的专业度，有助于增强家长信任。</p>
+          </div>
+          <div class="principal-card">
+            <div class="q-mark">Q</div>
+            <h4>是否增加教师负担？</h4>
+            <p>系统引入的目标不是增加教师额外工作，而是减少重复通知、人工统计和多平台查找。后续是否试点，也应将教师使用体验作为重要评估标准。</p>
+          </div>
+          <div class="principal-card">
+            <div class="q-mark">Q</div>
+            <h4>是否保障数据安全？</h4>
+            <p>数据安全是平台评估的核心问题之一。后续与平台沟通时，需要重点确认数据存储、权限、备份、导出和合规机制。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  <!-- Role filter -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">不同角色的收益视角</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">选择角色，了解系统化管理对不同岗位的具体价值。</p>
+
+      <div class="role-filter" id="roleFilter">
+        <button class="role-btn active" onclick="switchRole('principal', this)">管理层</button>
+        <button class="role-btn" onclick="switchRole('curriculum', this)">课程负责人</button>
+        <button class="role-btn" onclick="switchRole('homeroom', this)">班主任</button>
+        <button class="role-btn" onclick="switchRole('teacher', this)">任课教师</button>
+        <button class="role-btn" onclick="switchRole('counselor', this)">升学指导</button>
+        <button class="role-btn" onclick="switchRole('dorm', this)">宿舍管理</button>
+        <button class="role-btn" onclick="switchRole('admin', this)">行政 / IT</button>
+      </div>
+
+      <div id="role-principal" class="role-content active">
+        <div class="role-panel">
+          <h3>看到整体运行状态。</h3>
+          <p>系统可以帮助管理层更清楚地了解课程运行、学生支持、作业评估、家校沟通和数据安全情况，减少对零散汇报的依赖。</p>
+        </div>
+      </div>
+      <div id="role-curriculum" class="role-content">
+        <div class="role-panel">
+          <h3>课程管理更加清晰。</h3>
+          <p>课程负责人可以更方便地查看课程计划、教学进度、评估安排和成绩反馈，尤其适合多课程体系并行的高中部管理场景。</p>
+        </div>
+      </div>
+      <div id="role-homeroom" class="role-content">
+        <div class="role-panel">
+          <h3>学生信息更完整。</h3>
+          <p>班主任可以更系统地了解学生的学习、考勤、作业、行为、家校沟通等情况，减少在多个群和表格之间查找信息的时间。</p>
+        </div>
+      </div>
+      <div id="role-teacher" class="role-content">
+        <div class="role-panel">
+          <h3>减少重复事务。</h3>
+          <p>任课教师可以更有序地发布任务、收集作业、记录反馈和查看学生完成情况，减少重复提醒和人工统计。</p>
+        </div>
+      </div>
+      <div id="role-counselor" class="role-content">
+        <div class="role-panel">
+          <h3>学生成长材料更容易沉淀。</h3>
+          <p>升学指导需要长期跟踪学生的学术表现、活动记录、能力发展和申请材料。系统化记录有助于减少后期材料整理压力。</p>
+        </div>
+      </div>
+      <div id="role-dorm" class="role-content">
+        <div class="role-panel">
+          <h3>生活表现与学习支持更容易联动。</h3>
+          <p>寄宿制管理中，学生请假、考勤、行为和宿舍表现如果能与教学端形成适度联动，将有助于班主任和管理层更完整地了解学生状态。</p>
+        </div>
+      </div>
+      <div id="role-admin" class="role-content">
+        <div class="role-panel">
+          <h3>流程、权限和数据更加规范。</h3>
+          <p>行政和 IT 可以通过统一账号、权限设置、数据归档和系统维护机制，减少信息散落在个人账号和聊天工具中的风险。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div><!-- /page-value -->
+
+
+
+
+  <!-- ============================================================ -->
+  <!-- PAGE: PLATFORM COMPARE                                       -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-compare">
+    <div class="page-hero">
+      <div class="container">
+        <span class="hero-label">系统对比</span>
+        <h1>先问对问题，再看哪个系统适合我们</h1>
+        <p>公开资料只能看到产品轮廓，需要平台方结合武汉英中的场景来回答。</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <!-- <div class="section-desc">
+          <p>ManageBac+ 需要重点验证国际课程管理深度。云谷教育系统需要重点验证本土化学校治理和数据平台能力。两个平台都值得了解，关键是让它们围绕我们的场景来展示，而不是只播放标准产品介绍。</p>
+        </div> -->
+
+        <!-- Platform tabs -->
+        <div class="platform-tabs">
+          <button class="platform-tab active" onclick="switchPlatform('mb', this)">ManageBac+</button>
+          <button class="platform-tab" onclick="switchPlatform('yg', this)">云谷教育系统</button>
+          <button class="platform-tab" onclick="switchPlatform('both', this)">对比视图</button>
+        </div>
+
+        <!-- ManageBac -->
+        <div class="platform-panel active" id="plat-mb">
+          <div class="platform-intro">
+            <div class="pi-header">
+              <span class="platform-badge badge-mb">ManageBac+</span>
+              <h2>国际课程管理平台</h2>
+            </div>
+            <p>ManageBac+ 需要重点验证其在国际课程管理方面的适配度，包括 IGCSE、A-Level、IBDP、AP、OSSD、IFY 等课程体系的支持深度，以及课程规划、作业、评估、报告和家校沟通等功能是否适合武汉英中高中部使用。</p>
+          </div>
+          <div style="margin-top:16px;">
+            <h3 style="font-size:15px;color:var(--blue);margin-bottom:14px;">核心调研方向</h3>
+            <div class="card-grid-2">
+              <div class="value-card">
+                <h3>课程体系支持</h3>
+                <p>IGCSE、A-Level、IBDP、AP、OSSD、IFY 各课程体系的深度支持情况，包括课程标准映射和评估框架。</p>
+                <div class="tag-group" style="margin-top:10px;">
+                  <span class="tag tag-blue">IGCSE</span>
+                  <span class="tag tag-blue">A-Level</span>
+                  <span class="tag tag-blue">IBDP</span>
+                  <span class="tag tag-blue">AP</span>
+                  <span class="tag tag-blue">OSSD</span>
+                  <span class="tag tag-blue">IFY</span>
+                </div>
+              </div>
+              <div class="value-card">
+                <h3>教学流程</h3>
+                <p>课程规划、作业布置与收取、评估记录、成绩报告和家校沟通模块是否完善，使用门槛是否合理。</p>
+              </div>
+              <div class="value-card">
+                <h3>家校沟通</h3>
+                <p>是否能替代部分 QQ 通知和学习反馈，家长端体验是否适合国内使用习惯。</p>
+              </div>
+              <div class="value-card">
+                <h3>数据与费用</h3>
+                <p>数据存储位置、权限机制、备份和导出，以及账号费用、模块费用和培训成本结构。</p>
+              </div>
+            </div>
+          </div>
+          <details class="questions-box questions-accordion" style="margin-top:24px;">
+            <summary class="questions-summary">
+              <h3>需要向 ManageBac+ 提问的问题</h3>
+              <span class="tl-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>            
+            </summary>
+            <p class="q-desc">围绕武汉英中高中部的实际场景，重点验证以下问题：</p>
+            <div class="q-list">
+              <div class="q-item">
+                <span class="q-num">1</span>
+                <p>IGCSE、A-Level、IBDP、AP、OSSD、IFY 各体系在平台内的支持深度分别是什么？能否展示各课程体系的评估配置和成绩报告样例？</p>
+              </div>
+              <div class="q-item">
+                <span class="q-num">2</span>
+                <p>作业布置、收取、反馈和成绩记录的完整流程是怎样的？教师端的日常操作门槛如何？</p>
+              </div>
+              <div class="q-item">
+                <span class="q-num">3</span>
+                <p>家长端和学生端是否适合国内使用场景？访问速度和稳定性在中国大陆是否有保障？</p>
+              </div>
+              <div class="q-item">
+                <span class="q-num">4</span>
+                <p>数据存储在哪个区域？权限分级机制、数据导出和备份方式具体是什么？</p>
+              </div>
+              <div class="q-item">
+                <span class="q-num">5</span>
+                <p>如果高中部先行了解或小范围试用，费用结构、实施周期和培训支持方式是什么？</p>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- Yungu -->
+        <div class="platform-panel" id="plat-yg">
+          <div class="platform-intro">
+            <div class="pi-header">
+              <span class="platform-badge badge-yg">云谷教育系统</span>
+              <h2>本土化学校数字化治理平台</h2>
+            </div>
+            <p>云谷教育系统需要重点验证其在本土化学校数字化治理方面的适配度，包括教学管理、学教研、综合评价、校园办公、数据平台、中文服务、数据合规和本地化实施能力是否适合武汉英中的长期发展。</p>
+          </div>
+          <div style="margin-top:16px;">
+            <h3 style="font-size:15px;color:var(--wine);margin-bottom:14px;">核心调研方向</h3>
+            <div class="card-grid-2">
+              <div class="value-card">
+                <h3 style="font-size:15px;color:var(--wine);margin-bottom:14px;" >多课程体系适配</h3>
+                <p>是否能适配武汉英中现有的多课程体系并行管理场景，课程自定义和评估配置的灵活性如何。</p>
+              </div>
+              <div class="value-card">
+                <h3 style="font-size:15px;color:var(--wine);margin-bottom:14px;" >教学与教研</h3>
+                <p>教学管理、学教研、综合评价和校园办公等模块的完善程度，以及数据平台的可视化和分析能力。</p>
+              </div>
+              <div class="value-card">
+                <h3 style="font-size:15px;color:var(--wine);margin-bottom:14px;" >家校沟通</h3>
+                <p>是否更符合国内家校沟通习惯，微信或小程序集成能力，以及中文本地化服务水平。</p>
+              </div>
+              <div class="value-card">
+                <h3 style="font-size:15px;color:var(--wine);margin-bottom:14px;" >本土化部署与安全</h3>
+                <p>本土化部署选项、数据合规机制、权限管理，以及定制费用、部署费用和长期服务费用结构。</p>
+              </div>
+            </div>
+          </div>
+          <details class="questions-box questions-accordion" style="margin-top:24px;">
+            <summary class="questions-summary questions-summary-yg">
+              <h3>需要向云谷教育系统提问的问题</h3>
+              <span class="accordion-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <p class="q-desc">围绕武汉英中高中部的实际场景，重点验证以下问题：</p>
+            <div class="q-list">
+              <div class="q-item">
+                <span class="q-num" style="background:var(--wine);">1</span>
+                <p>平台是否有支持多个国际课程体系并行运营的落地案例？课程评估和成绩记录能否按不同课程体系分别配置？</p>
+              </div>
+              <div class="q-item">
+                <span class="q-num" style="background:var(--wine);">2</span>
+                <p>教学管理、综合评价、学生档案等核心模块在国际学校场景下的实际使用情况如何？能否展示真实操作界面？</p>
+              </div>
+              <div class="q-item">
+                <span class="q-num" style="background:var(--wine);">3</span>
+                <p>家校沟通是否支持微信或小程序接入？家长端的使用门槛和通知触达方式是怎样的？</p>
+              </div>
+              <div class="q-item">
+                <span class="q-num" style="background:var(--wine);">4</span>
+                <p>数据部署方式是私有化还是云端？数据权限分级、操作记录、备份和合规机制具体如何设计？</p>
+              </div>
+              <div class="q-item">
+                <span class="q-num" style="background:var(--wine);">5</span>
+                <p>高中部先行了解或试点的实施周期、定制开发范围、培训方式和费用结构分别是什么？</p>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- Both / table -->
+        <div class="platform-panel" id="plat-both">
+          <div class="compare-table-wrap">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>对比维度</th>
+                  <th>ManageBac+ 初步调研重点</th>
+                  <th>云谷教育系统初步调研重点</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>课程体系</td>
+                  <td>是否深度支持 IGCSE、A-Level、IBDP、AP、OSSD、IFY</td>
+                  <td>是否能适配武汉英中现有多课程体系</td>
+                </tr>
+                <tr>
+                  <td>教学流程</td>
+                  <td>课程规划、作业、评估、报告是否成熟</td>
+                  <td>教学教研、评价、办公和数据平台能力如何</td>
+                </tr>
+                <tr>
+                  <td>家校沟通</td>
+                  <td>是否能替代部分 QQ 通知和学习反馈</td>
+                  <td>是否更符合国内家校沟通习惯</td>
+                </tr>
+                <tr>
+                  <td>数据安全</td>
+                  <td>数据存储、权限、导出和备份机制</td>
+                  <td>本土化部署、数据合规、权限机制</td>
+                </tr>
+                <tr>
+                  <td>实施成本</td>
+                  <td>账号费用、模块费用、培训成本</td>
+                  <td>定制费用、部署费用、服务费用</td>
+                </tr>
+                <tr>
+                  <td>适配方向</td>
+                  <td>高中部国际课程教学管理</td>
+                  <td>学校整体数字化治理与本土化管理</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Questions note for compare view -->
+        <div class="questions-box" id="qbox-compare" style="display:none;">
+          <p class="q-note">切换到 ManageBac+ 或云谷教育系统标签，可查看各平台的定向问题清单。</p>
+        </div>
+      </div>
+    </section>
+  </div><!-- /page-compare -->
+
+
+  <!-- ============================================================ -->
+  <!-- PAGE: RESEARCH PLAN                                          -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-plan">
+    <div class="page-hero">
+      <div class="container">
+        <span class="hero-label">调研计划</span>
+        <h1>先把问题问清楚，再让平台给答案</h1>
+        <p>用校内真实需求，倒推平台演示内容。</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-desc">
+          <p>平台介绍最容易出现的问题，是功能很多，和学校最急的问题不一定匹配。我们需要先从校内一线出发，收集教师、行政、课程负责人、升学指导和宿舍管理的真实痛点，再把这些问题交给平台方回答。</p>
+          <p>这样做的好处很直接：平台讲什么，由学校需求决定；后续怎么选，由真实反馈决定。</p>
+        </div>
+
+        <h2 class="section-title">五阶段调研路径</h2>
+        <div class="divider"></div>
+
+        <div class="timeline" style="margin-top:28px;" id="planTimeline">
+
+          <!-- Phase 1 -->
+          <div class="timeline-item" id="tl-1">
+            <div class="timeline-dot">1</div>
+            <div class="timeline-header" onclick="toggleTimeline('tl-1')">
+              <h3>校内需求收集</h3>
+              <span class="tl-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="timeline-body">
+              <div class="tl-field">
+                <label>目标</label>
+                <p>了解高中部不同岗位在日常工作中的真实痛点。</p>
+              </div>
+              <div class="tl-field">
+                <label>参与对象</label>
+                <p>课程负责人、年级主任、班主任、任课教师、升学指导、宿舍管理、行政人员、IT 相关人员。</p>
+              </div>
+              <div class="tl-field">
+                <label>产出</label>
+                <span class="tl-output">校内痛点清单</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phase 2 -->
+          <div class="timeline-item" id="tl-2">
+            <div class="timeline-dot">2</div>
+            <div class="timeline-header" onclick="toggleTimeline('tl-2')">
+              <h3>初步需求整理</h3>
+              <span class="tl-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="timeline-body">
+              <div class="tl-field">
+                <label>目标</label>
+                <p>将反馈归类为沟通、课程、作业评估、学生数据、家校沟通、寄宿管理、数据安全等方向。</p>
+              </div>
+              <div class="tl-field">
+                <label>参与对象</label>
+                <p>项目牵头人及相关负责人。</p>
+              </div>
+              <div class="tl-field">
+                <label>产出</label>
+                <span class="tl-output">系统需求框架</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phase 3 -->
+          <div class="timeline-item" id="tl-3">
+            <div class="timeline-dot">3</div>
+            <div class="timeline-header" onclick="toggleTimeline('tl-3')">
+              <h3>联系平台方</h3>
+              <span class="tl-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="timeline-body">
+              <div class="tl-field">
+                <label>目标</label>
+                <p>向 ManageBac+ 与云谷教育系统介绍武汉英中高中部背景和核心痛点。</p>
+              </div>
+              <div class="tl-field">
+                <label>参与对象</label>
+                <p>项目牵头人、平台方产品或技术负责人。</p>
+              </div>
+              <div class="tl-field">
+                <label>产出</label>
+                <span class="tl-output">平台沟通记录与初步资料</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phase 4 -->
+          <div class="timeline-item" id="tl-4">
+            <div class="timeline-dot">4</div>
+            <div class="timeline-header" onclick="toggleTimeline('tl-4')">
+              <h3>定向演示</h3>
+              <span class="tl-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="timeline-body">
+              <div class="tl-field">
+                <label>目标</label>
+                <p>要求平台方围绕武汉英中的真实场景展示，而不是只进行标准产品介绍。</p>
+              </div>
+              <div class="tl-field">
+                <label>参与对象</label>
+                <p>学校管理层、相关教师或行政代表、平台方。</p>
+              </div>
+              <div class="tl-field">
+                <label>产出</label>
+                <span class="tl-output">功能匹配度记录</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phase 5 -->
+          <div class="timeline-item" id="tl-5">
+            <div class="timeline-dot">5</div>
+            <div class="timeline-header" onclick="toggleTimeline('tl-5')">
+              <h3>形成汇报材料</h3>
+              <span class="tl-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="timeline-body">
+              <div class="tl-field">
+                <label>目标</label>
+                <p>比较两类平台在功能、成本、数据安全、实施难度、培训支持和后续服务方面的差异。</p>
+              </div>
+              <div class="tl-field">
+                <label>参与对象</label>
+                <p>项目牵头人及学校相关负责人。</p>
+              </div>
+              <div class="tl-field">
+                <label>产出</label>
+                <span class="tl-output">提交给校长的对比报告与后续建议</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /timeline -->
+
+        <!-- Risk box -->
+        <div class="risk-box">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0;"><path d="M9 2L1.5 15.5h15L9 2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 8v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="13.5" r="0.75" fill="currentColor"/></svg>
+            风险控制
+          </h3>
+          <ul>
+            <li>本阶段以需求收集和平台了解为主，不直接进入采购决策。</li>
+            <li>平台方介绍需要围绕武汉英中的真实痛点展开，避免泛泛展示产品功能。</li>
+            <li>后续是否试点、试点范围和预算，应在正式对比报告完成后再由学校决定。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div><!-- /page-plan -->
+
+
+  <!-- ============================================================ -->
+  <!-- PAGE: SURVEY                                                 -->
+  <!-- ============================================================ -->
+  <div class="page" id="page-survey">
+    <div class="page-hero">
+      <div class="container">
+        <span class="hero-label">调研问卷</span>
+        <h1>面向教职工的数字化管理需求调研</h1>
+        <p>先听到一线真实声音，再让平台方回答学校真正关心的问题。</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-desc">
+          <p>高中部的数字化系统调研，不能只从平台功能清单出发。真正需要先了解的是：老师、行政、课程负责人、班主任、升学指导、宿舍管理和 IT 人员，在日常工作中遇到哪些低效流程、重复工作和数据管理问题。</p>
+          <p>这份问卷用于收集教职工对当前沟通方式、课程管理、学生信息、家校沟通、数据安全和系统需求的真实反馈。后续整理结果后，将作为联系 ManageBac+ 与云谷教育系统的重要依据。</p>
+          <p>平台方介绍什么，不应由产品销售话术决定。应该由武汉英中自己的真实需求决定。</p>
+        </div>
+
+        <!-- Four info cards -->
+        <div class="survey-cards">
+          <div class="survey-card">
+            <div class="sc-icon">📋</div>
+            <h4>收集真实痛点</h4>
+            <p>了解高中部教职工在沟通、课程管理、作业评估、学生数据、家校沟通、寄宿管理和数据安全方面的真实问题。</p>
+          </div>
+          <div class="survey-card">
+            <div class="sc-icon">👥</div>
+            <h4>覆盖关键岗位</h4>
+            <p>建议面向课程负责人、年级主任、班主任、任课教师、升学指导、宿舍管理、行政人员和 IT 相关人员发放。</p>
+          </div>
+          <div class="survey-card">
+            <div class="sc-icon">🎯</div>
+            <h4>用于平台沟通</h4>
+            <p>问卷结果将被整理成学校需求清单，用于要求 ManageBac+ 和云谷教育系统围绕武汉英中真实场景进行定向介绍。</p>
+          </div>
+          <div class="survey-card">
+            <div class="sc-icon">📊</div>
+            <h4>形成对比依据</h4>
+            <p>调研结果将支持后续形成系统平台对比报告，包括功能匹配度、实施难度、数据安全、培训支持和成本结构等内容。</p>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="survey-cta">
+          <p>本次问卷面向高中部全体教职工，旨在了解不同岗位在日常工作中的真实使用场景、沟通痛点、重复性工作和系统需求。问卷填写时间约 5–8 分钟，收集结果将用于梳理武汉英中高中部当前最需要解决的问题，并作为后续与教育管理系统平台沟通的重要依据。</p>
+          <a href="#" class="btn-survey" id="surveyBtn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            填写教职工调研问卷
+          </a>
+        </div>
+
+        <!-- Outcomes -->
+        <div class="survey-outcomes">
+          <h3>问卷收集后的四项产出</h3>
+          <p class="so-note">本问卷旨在收集武汉英中各岗位高频痛点需求，以便更好的与平台方沟通解释，最终带来更适合武汉英中所需的功能展示。</p>
+          <div class="outcome-grid">
+            <div class="outcome-item">
+              <span class="outcome-num">1</span>
+              <p>高频痛点</p>
+            </div>
+            <div class="outcome-item">
+              <span class="outcome-num">2</span>
+              <p>不同岗位的系统需求</p>
+            </div>
+            <div class="outcome-item">
+              <span class="outcome-num">3</span>
+              <p>平台方需要回答的问题</p>
+            </div>
+            <div class="outcome-item">
+              <span class="outcome-num">4</span>
+              <p>平台系统的定向演示重点</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /page-survey -->
+
+</main><!-- /main -->
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <span>武汉英中 · 高中部数字化教学管理系统调研计划</span>
+    <span>仅供内部展示使用</span>
+  </div>
+</footer>
+
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  // ---- Page navigation ----
+  var currentPage = 'home';
+
+  function navigate(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(function(p) {
+      p.classList.remove('active');
+    });
+    // Show target page
+    var target = document.getElementById('page-' + pageId);
+    if (target) {
+      target.classList.add('active');
+    }
+    // Update nav links
+    document.querySelectorAll('.nav-link').forEach(function(link) {
+      link.classList.toggle('active', link.dataset.page === pageId);
+    });
+    currentPage = pageId;
+    // Close mobile menu
+    closeMobileNav();
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Attach nav link events
+  document.querySelectorAll('.nav-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      navigate(this.dataset.page);
+    });
+  });
+
+  // ---- Mobile nav toggle ----
+  var navToggle = document.getElementById('navToggle');
+  var mobileNav = document.getElementById('mobileNav');
+
+  navToggle.addEventListener('click', function() {
+    var open = mobileNav.classList.contains('open');
+    if (open) {
+      closeMobileNav();
+    } else {
+      mobileNav.classList.add('open');
+      navToggle.classList.add('open');
+    }
+  });
+
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    navToggle.classList.remove('open');
+  }
+
+  // ---- Logo fallback ----
+  var navLogo = document.getElementById('navLogo');
+  var navLogoFallback = document.getElementById('navLogoFallback');
+  navLogo.addEventListener('error', function() {
+    navLogo.style.display = 'none';
+    navLogoFallback.style.display = 'block';
+  });
+  // Try to trigger check if already failed
+  if (!navLogo.complete || navLogo.naturalWidth === 0) {
+    navLogo.style.display = 'none';
+    navLogoFallback.style.display = 'block';
+  }
+
+// ---- Pain card accordion ----
+  function togglePain(card) {
+    card.classList.toggle('open');
+  }
+
+  // ---- Role filter (value page) ----
+  var roles = ['principal', 'curriculum', 'homeroom', 'teacher', 'counselor', 'dorm', 'admin'];
+
+  function switchRole(roleId, btn) {
+    roles.forEach(function(r) {
+      var el = document.getElementById('role-' + r);
+      if (el) el.classList.remove('active');
+    });
+    var target = document.getElementById('role-' + roleId);
+    if (target) target.classList.add('active');
+    document.querySelectorAll('.role-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    if (btn) btn.classList.add('active');
+  }
+
+  // ---- Platform tabs ----
+  var platforms = ['mb', 'yg', 'both'];
+
+  function switchPlatform(platId, btn) {
+    platforms.forEach(function(p) {
+      var el = document.getElementById('plat-' + p);
+      if (el) el.classList.remove('active');
+    });
+    var target = document.getElementById('plat-' + platId);
+    if (target) target.classList.add('active');
+    document.querySelectorAll('.platform-tab').forEach(function(t) {
+      t.classList.remove('active');
+    });
+    if (btn) btn.classList.add('active');
+  }
+
+  // ---- Timeline accordion (plan page) ----
+  function toggleTimeline(id) {
+    var item = document.getElementById(id);
+    if (item) item.classList.toggle('open');
+  }
+
+  // ---- Survey button ----
+  document.getElementById('surveyBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    alert('问卷链接尚未添加。\n\n后续可将 href="#" 替换为问卷星、腾讯问卷、金山表单或学校内部表单链接。');
+  });
+
+  // ---- Hero buttons on home page ----
+  // (Already handled via onclick attributes above)
+</script>
+</body>
+</html>
