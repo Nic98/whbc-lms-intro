@@ -1262,41 +1262,6 @@
       </div>
     </div>
 
-    <section class="section">
-      <div class="container">
-
-        <!-- Compare cards -->
-        <h2 class="section-title">QQ 模式 vs 系统化管理</h2>
-        <div class="divider"></div>
-
-        <div class="compare-cards" style="margin-top:20px;">
-          <div class="compare-card qq">
-            <h3>当前以 QQ 为主的模式</h3>
-            <p>通知、文件、作业、反馈、临时安排混在多个群聊和私聊中，信息查找和确认依赖个人经验。</p>
-            <div class="tag-group" style="margin-top:14px;">
-              <span class="tag tag-gray">群聊</span>
-              <span class="tag tag-gray">私聊</span>
-              <span class="tag tag-gray">截图</span>
-              <span class="tag tag-gray">手工统计</span>
-              <span class="tag tag-gray">文件分散</span>
-              <span class="tag tag-gray">难以追踪</span>
-            </div>
-          </div>
-          <div class="compare-card sys">
-            <h3>系统化管理后的模式</h3>
-            <p>课程、作业、评估、反馈、通知和学生记录在统一平台中形成结构化数据，方便追踪、归档和分析。</p>
-            <div class="tag-group" style="margin-top:14px;">
-              <span class="tag tag-blue">统一平台</span>
-              <span class="tag tag-blue">状态追踪</span>
-              <span class="tag tag-blue">学生档案</span>
-              <span class="tag tag-blue">权限管理</span>
-              <span class="tag tag-blue">数据沉淀</span>
-              <span class="tag tag-blue">可视化反馈</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Pain cards -->
     <section class="section section-alt">
@@ -1306,7 +1271,7 @@
         <div class="pain-grid" id="painGrid">
 
           <!-- 1 -->
-          <div class="pain-card" onclick="togglePain(this)">
+          <div class="pain-card open" onclick="togglePain(this)">
             <div class="pain-card-header">
               <div class="pain-header-left">
                 <span class="pain-num">1</span>
@@ -1323,7 +1288,7 @@
           </div>
 
           <!-- 2 -->
-          <div class="pain-card" onclick="togglePain(this)">
+          <div class="pain-card open" onclick="togglePain(this)">
             <div class="pain-card-header">
               <div class="pain-header-left">
                 <span class="pain-num">2</span>
@@ -1340,7 +1305,7 @@
           </div>
 
           <!-- 3 -->
-          <div class="pain-card" onclick="togglePain(this)">
+          <div class="pain-card open" onclick="togglePain(this)">
             <div class="pain-card-header">
               <div class="pain-header-left">
                 <span class="pain-num">3</span>
@@ -1357,7 +1322,7 @@
           </div>
 
           <!-- 4 -->
-          <div class="pain-card" onclick="togglePain(this)">
+          <div class="pain-card open" onclick="togglePain(this)">
             <div class="pain-card-header">
               <div class="pain-header-left">
                 <span class="pain-num">4</span>
@@ -1374,7 +1339,7 @@
           </div>
 
           <!-- 5 -->
-          <div class="pain-card" onclick="togglePain(this)">
+          <div class="pain-card open" onclick="togglePain(this)">
             <div class="pain-card-header">
               <div class="pain-header-left">
                 <span class="pain-num">5</span>
@@ -1391,7 +1356,7 @@
           </div>
 
           <!-- 6 -->
-          <div class="pain-card" onclick="togglePain(this)">
+          <div class="pain-card open" onclick="togglePain(this)">
             <div class="pain-card-header">
               <div class="pain-header-left">
                 <span class="pain-num">6</span>
@@ -1436,16 +1401,19 @@
             <h3>管理效率</h3>
             <p>管理层可以更快看到高中部运行状态，不再只依赖临时汇报和人工汇总。课程进度、任务执行、学生支持和沟通状态可以逐步形成清晰视图。</p>
           </div>
+
+          <div class="value-card" style="background: #f2be45;">
+            <div class="icon" style="background:var(--blue-dim);">🏆</div>
+            <h3>学校品牌</h3>
+            <p1>家长感受到的学校专业度，不只来自课程介绍和升学结果，也来自日常反馈是否清晰、沟通是否稳定、管理是否透明。系统化管理可以成为学校品牌的一部分。</p1>
+          </div>
+
           <div class="value-card">
             <div class="icon" style="background:#fef3e2;">✏️</div>
             <h3>教师减负</h3>
             <p>教师最宝贵的时间应该用于教学、反馈和学生支持。系统可以减少重复通知、催交、截图、统计和文件查找，让低价值事务逐步被流程化处理。</p>
           </div>
-          <div class="value-card">
-            <div class="icon" style="background:var(--wine-dim);">🏆</div>
-            <h3>学校品牌</h3>
-            <p>家长感受到的学校专业度，不只来自课程介绍和升学结果，也来自日常反馈是否清晰、沟通是否稳定、管理是否透明。系统化管理可以成为学校品牌的一部分。</p>
-          </div>
+
           <div class="value-card">
             <div class="icon" style="background:#e8f5e9;">🔐</div>
             <h3>数据安全</h3>
@@ -1466,10 +1434,10 @@
             <h4>成本是否可控？</h4>
             <p>本阶段重点是需求收集和平台了解，不直接进入大规模投入。通过先调研、再比较、后决策，可以避免盲目采购。</p>
           </div>
-          <div class="principal-card">
+          <div class="principal-card" style="background: #f2be45;"">
             <div class="q-mark">Q</div>
             <h4>是否提升学校品牌？</h4>
-            <p>统一的教育管理系统能够体现学校在课程管理、家校服务、数据安全和国际化治理方面的专业度，有助于增强家长信任。</p>
+            <p1>统一的教育管理系统能够体现学校在课程管理、家校服务、数据安全和国际化治理方面的专业度，有助于增强家长信任。</p1>
           </div>
           <div class="principal-card">
             <div class="q-mark">Q</div>
