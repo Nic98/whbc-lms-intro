@@ -814,6 +814,93 @@
     margin-bottom: 6px;
   }
 
+  /* ===== TIMELINE OVERVIEW BAR ===== */
+  .tl-overview {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 36px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .tl-ov-item {
+    flex: 1;
+    padding: 14px 12px;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+  }
+  .tl-ov-item:last-child { border-right: none; }
+  .tl-ov-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 6px;
+  }
+  .tl-ov-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .tl-ov-date {
+    font-size: 11.5px;
+    color: var(--wine);
+    font-weight: 600;
+    background: var(--wine-dim);
+    border-radius: 4px;
+    padding: 2px 6px;
+    display: inline-block;
+    cursor: pointer;
+    border: 1px dashed var(--wine);
+    transition: background var(--transition);
+  }
+  .tl-ov-date:hover { background: #efd8da; }
+
+  /* Timeline date badge inside each phase header */
+  .tl-header-left { display: flex; flex-direction: column; gap: 3px; }
+  .tl-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--wine);
+    font-weight: 600;
+    background: var(--wine-dim);
+    border: 1px dashed var(--wine);
+    border-radius: 4px;
+    padding: 2px 8px;
+    width: fit-content;
+    cursor: default;
+  }
+  .tl-date-badge svg { flex-shrink: 0; }
+
+  /* Timeline duration inside body */
+  .tl-duration {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 5px 12px;
+    margin-top: 4px;
+    margin-bottom: 14px;
+  }
+
   /* ===== RESEARCH PLAN PAGE ===== */
   .timeline {
     position: relative;
@@ -1755,18 +1842,53 @@
         <h2 class="section-title">五阶段调研路径</h2>
         <div class="divider"></div>
 
+        <div class="tl-overview">
+          <div class="tl-ov-item">
+            <div class="tl-ov-num">1</div>
+            <div class="tl-ov-name">校内需求收集</div>
+            <span class="tl-ov-date" title="点此提醒自己填写日期">04.15</span>
+          </div>
+          <div class="tl-ov-item">
+            <div class="tl-ov-num">2</div>
+            <div class="tl-ov-name">初步需求整理</div>
+            <span class="tl-ov-date" title="点此提醒自己填写日期">04.20</span>
+          </div>
+          <div class="tl-ov-item">
+            <div class="tl-ov-num">3</div>
+            <div class="tl-ov-name">联系平台方</div>
+            <span class="tl-ov-date" title="点此提醒自己填写日期">04.21</span>
+          </div>
+          <div class="tl-ov-item">
+            <div class="tl-ov-num">4</div>
+            <div class="tl-ov-name">定向演示</div>
+            <span class="tl-ov-date" title="点此提醒自己填写日期">待定</span>
+          </div>
+          <div class="tl-ov-item">
+            <div class="tl-ov-num">5</div>
+            <div class="tl-ov-name">形成汇报材料</div>
+            <span class="tl-ov-date" title="点此提醒自己填写日期">待定</span>
+          </div>
+        </div>
+
         <div class="timeline" style="margin-top:28px;" id="planTimeline">
 
           <!-- Phase 1 -->
           <div class="timeline-item" id="tl-1">
             <div class="timeline-dot">1</div>
             <div class="timeline-header" onclick="toggleTimeline('tl-1')">
-              <h3>校内需求收集</h3>
+              <div class="tl-header-left">
+                <h3>校内需求收集</h3>
+              </div>
               <span class="tl-arrow">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </span>
             </div>
             <div class="timeline-body">
+              <!-- ★ 将"待定"替换为实际预计时长，如：约1周 -->
+              <span class="tl-duration">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 3.5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                预计时长：约1周
+              </span>
               <div class="tl-field">
                 <label>目标</label>
                 <p>了解高中部不同岗位在日常工作中的真实痛点。</p>
@@ -1786,12 +1908,20 @@
           <div class="timeline-item" id="tl-2">
             <div class="timeline-dot">2</div>
             <div class="timeline-header" onclick="toggleTimeline('tl-2')">
-              <h3>初步需求整理</h3>
+              <div class="tl-header-left">
+                <h3>初步需求整理</h3>
+                <!-- ★ 将"待定"替换为实际日期，如：6月第2周 -->
+              </div>
               <span class="tl-arrow">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </span>
             </div>
             <div class="timeline-body">
+              <!-- ★ 将"待定"替换为实际预计时长，如：约3天 -->
+              <span class="tl-duration">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 3.5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                预计时长：约3天
+              </span>
               <div class="tl-field">
                 <label>目标</label>
                 <p>将反馈归类为沟通、课程、作业评估、学生数据、家校沟通、寄宿管理、数据安全等方向。</p>
@@ -1811,12 +1941,19 @@
           <div class="timeline-item" id="tl-3">
             <div class="timeline-dot">3</div>
             <div class="timeline-header" onclick="toggleTimeline('tl-3')">
-              <h3>联系平台方</h3>
+              <div class="tl-header-left">
+                <h3>联系平台方</h3>
+              </div>
               <span class="tl-arrow">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </span>
             </div>
             <div class="timeline-body">
+              <!-- ★ 将"待定"替换为实际预计时长，如：持续1周（等待对方回复） -->
+              <span class="tl-duration">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 3.5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                预计时长：持续1周（等待对方回复）
+              </span>
               <div class="tl-field">
                 <label>目标</label>
                 <p>向 ManageBac+ 与云谷教育系统介绍武汉英中高中部背景和核心痛点。</p>
@@ -1836,12 +1973,19 @@
           <div class="timeline-item" id="tl-4">
             <div class="timeline-dot">4</div>
             <div class="timeline-header" onclick="toggleTimeline('tl-4')">
-              <h3>定向演示</h3>
+              <div class="tl-header-left">
+                <h3>定向演示</h3>
+              </div>
               <span class="tl-arrow">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </span>
             </div>
             <div class="timeline-body">
+              <!-- ★ 将"待定"替换为实际预计时长，如：两场演示，间隔2-3天 -->
+              <span class="tl-duration">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 3.5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                预计时长：两场演示，间隔2-3天
+              </span>
               <div class="tl-field">
                 <label>目标</label>
                 <p>要求平台方围绕武汉英中的真实场景展示，而不是只进行标准产品介绍。</p>
@@ -1861,12 +2005,19 @@
           <div class="timeline-item" id="tl-5">
             <div class="timeline-dot">5</div>
             <div class="timeline-header" onclick="toggleTimeline('tl-5')">
-              <h3>形成汇报材料</h3>
+              <div class="tl-header-left">
+                <h3>形成汇报材料</h3>
+              </div>
               <span class="tl-arrow">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </span>
             </div>
             <div class="timeline-body">
+              <!-- ★ 将"待定"替换为实际预计时长，如：约3-5天 -->
+              <span class="tl-duration">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 3.5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                预计时长：约3-5天
+              </span>
               <div class="tl-field">
                 <label>目标</label>
                 <p>比较两类平台在功能、成本、数据安全、实施难度、培训支持和后续服务方面的差异。</p>
@@ -1947,7 +2098,7 @@
 
         <!-- CTA -->
         <div class="survey-cta">
-          <p>本次问卷面向高中部全体教职工，旨在了解不同岗位在日常工作中的真实使用场景、沟通痛点、重复性工作和系统需求。问卷填写时间约 5–8 分钟，收集结果将用于梳理武汉英中高中部当前最需要解决的问题，并作为后续与教育管理系统平台沟通的重要依据。</p>
+          <p>本次问卷面向高中部各部分主要负责人，旨在了解不同岗位在日常工作中的真实使用场景、沟通痛点、重复性工作和系统需求。问卷填写时间约 5–8 分钟，收集结果将用于梳理武汉英中高中部当前最需要解决的问题，并作为后续与教育管理系统平台沟通的重要依据。</p>
           <a href="#" class="btn-survey" id="surveyBtn">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             填写教职工调研问卷
